@@ -16,6 +16,19 @@ app.get('/gamepasses/:userId', async (req, res) => {
     }
 });
 
+app.get('/groupgamepasses/:groupId', async (req, res) => {
+    const groupId = req.params.groupId;
+    try {
+        const response = await fetch(
+            `https://catalog.roblox.com/v1/search/items?category=GamePass&creatorTargetId=${groupId}&creatorType=Group&limit=10`
+        );
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch group gamepasses' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Proxy server running on port ${PORT}`);
 });
